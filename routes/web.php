@@ -19,4 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function() {
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    Route::post('/wallet/create', 'WalletController@create');
+    Route::delete('/wallet/delete/{wallet}', 'WalletController@delete');
+    Route::post('/wallet/update/{wallet}', 'WalletController@update');
+});
