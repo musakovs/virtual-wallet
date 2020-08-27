@@ -12,9 +12,14 @@ class WalletController extends Controller
     /**
      * @param Request $request
      * @return Wallet
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create(Request $request): Wallet
     {
+        $this->validate($request, [
+            'name' => 'required|string|max:255'
+        ]);
+
         $wallet = new Wallet(['name' => $request->post('name')]);
         /**@var $user User*/
         $user = Auth::user();
@@ -27,9 +32,14 @@ class WalletController extends Controller
      * @param Wallet $wallet
      * @param Request $request
      * @return bool
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Wallet $wallet, Request $request): bool
     {
+        $this->validate($request, [
+            'name' => 'required|string|max:255'
+        ]);
+
         return $wallet->update(['name' => $request->post('name')]);
     }
 

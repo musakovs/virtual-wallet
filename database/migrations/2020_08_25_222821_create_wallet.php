@@ -17,6 +17,7 @@ class CreateWallet extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained('users');
             $table->string('name');
+            $table->decimal('amount', '10','2')->unsigned()->default(0);
             $table->softDeletes();
             $table->timestamps();
             $table->unique(['user_id', 'name']);
