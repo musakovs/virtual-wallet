@@ -6,16 +6,21 @@
             <table width="100%">
                 <tr>
                     <th>Name</th>
-                    <th colspan="2">Actions</th>
+                    <th>Amount</th>
+                    <th colspan="4">Actions</th>
                 </tr>
 
                 <tr v-for="wallet in myWallets">
                     <td><input style="border: 0;outline: none;" v-model="wallet.name"></td>
+                    <td>{{wallet.amount}}</td>
                     <td>
                         <button class="btn btn-sm btn-danger" v-on:click="deleteWallet(wallet.id)">Delete</button>
                     </td>
                     <td>
                         <button class="btn btn-sm btn-success" v-on:click="renameWallet(wallet)">Rename</button>
+                    </td>
+                    <td>
+                        <a v-bind:href="transactionsLink(wallet)" class="btn btn-sm">Transactions</a>
                     </td>
                 </tr>
 
@@ -48,6 +53,9 @@ export default {
             axios.post('/wallet/update/' + wallet.id, wallet).then(() => {
                 alert('Wallet Renamed')
             })
+        },
+        transactionsLink: function(wallet) {
+            return '/wallet/' + wallet.id + '/transactions';
         }
     }
 }

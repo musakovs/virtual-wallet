@@ -4,7 +4,7 @@
         <div class="card-body">
             <form>
                 <input class="input-group-sm" type="text" v-model="wallet.name">
-                <button :disabled="loading" type="button" v-on:click="create" class="btn btn-sm btn-primary">Create</button>
+                <button :disabled="loading" type="submit" v-on:click="create" class="btn btn-sm btn-primary">Create</button>
             </form>
         </div>
     </div>
@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         create: function (e) {
+            e.preventDefault();
 
             this.loading = true;
 

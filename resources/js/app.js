@@ -23,6 +23,8 @@ Vue.component('wallet-list', require('./components/wallet-list.vue').default);
 Vue.component('wallet-create', require('./components/wallet-create.vue').default);
 Vue.component('home', require('./components/home.vue').default);
 
+Vue.component('transactions', require('./components/transactions.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
