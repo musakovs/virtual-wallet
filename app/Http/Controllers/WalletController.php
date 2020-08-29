@@ -21,7 +21,7 @@ class WalletController extends Controller
         ]);
 
         $wallet = new Wallet(['name' => $request->post('name')]);
-        /**@var $user User*/
+        /**@var $user User */
         $user = Auth::user();
         $user->wallets()->save($wallet);
 

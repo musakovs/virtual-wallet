@@ -11,3 +11,10 @@ docker-compose exec wallet-app php artisan migrate
 
 
 
+
+todo:
+FE - UI, errors, validation, ...
+wallets/transactions pagination
+
+
+
