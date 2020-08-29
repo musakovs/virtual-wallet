@@ -1981,6 +1981,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['wallet'],
   data: function data() {
@@ -2056,6 +2058,28 @@ __webpack_require__.r(__webpack_exports__);
       setTimeout(function () {
         _this4.errors = [];
       }, 5000);
+    },
+    totalIn: function totalIn() {
+      var _this5 = this;
+
+      return this.transactions.reduce(function (sum, transaction) {
+        if (!_this5.isOutgoing(transaction)) {
+          sum += parseFloat(transaction.amount);
+        }
+
+        return sum;
+      }, 0).toFixed(2);
+    },
+    totalOut: function totalOut() {
+      var _this6 = this;
+
+      return (-this.transactions.reduce(function (sum, transaction) {
+        if (_this6.isOutgoing(transaction)) {
+          sum += parseFloat(transaction.amount);
+        }
+
+        return sum;
+      }, 0)).toFixed(2);
     }
   }
 });
@@ -37857,7 +37881,11 @@ var render = function() {
         2
       ),
       _vm._v(" "),
-      _c("div", [
+      _c("div", { staticClass: "col-md-12 text-right" }, [
+        _vm._v("\n            Total in: " + _vm._s(_vm.totalIn()) + " "),
+        _c("br"),
+        _vm._v("\n            Total out: " + _vm._s(_vm.totalOut()) + " "),
+        _c("br"),
         _vm._v(
           "\n            Current Amount: " +
             _vm._s(_vm.myWallet.amount) +

@@ -16,14 +16,17 @@
                     <td>{{transaction.from.user.email}} : {{transaction.from.name}}</td>
                     <td>{{transaction.to.user.email}} : {{transaction.to.name}}</td>
                     <td>{{type(transaction)}}</td>
-                    <td><button class="btn btn-sm btn-dark" v-on:click="revert(transaction)">Delete</button></td>
+                    <td>
+                        <button class="btn btn-sm btn-dark" v-on:click="revert(transaction)">Delete</button>
+                    </td>
                     <td class="text-right">{{amount(transaction)}}</td>
                 </tr>
-
             </table>
 
-            <div>
-                Current Amount: {{myWallet.amount}}
+            <div class="col-md-12 text-right">
+                Total in: {{totalIn()}} <br>
+                Total out: {{totalOut()}} <br>
+                Current Amount: {{ myWallet.amount }}
             </div>
 
             <form>
@@ -38,7 +41,6 @@
                     <li v-for="error in errors">{{ error }}</li>
                 </ul>
             </div>
-
         </div>
     </div>
 </template>
@@ -46,11 +48,11 @@
 <script>
 export default {
     props: ['wallet'],
-    data: function() {
+    data: function () {
         return {
             myWallet: {},
             errors: [],
-            newTransaction : {
+            newTransaction: {
                 email: '',
                 wallet: '',
                 amount: null
@@ -63,19 +65,19 @@ export default {
         this.fetch();
     },
     methods: {
-        fetch: function() {
+        fetch: function () {
             axios.get('/wallet/' + this.myWallet.id + '/transactionsList')
-            .then((res) => {
-                this.transactions = res.data.data || res.data;
-            })
+                .then((res) => {
+                    this.transactions = res.data.data || res.data;
+                })
         },
         isOutgoing(transaction) {
             return transaction.from_wallet === this.myWallet.id;
         },
-        type: function(transaction) {
+        type: function (transaction) {
             return this.isOutgoing(transaction) ? 'Outgoing' : 'Incoming';
         },
-        amount: function(transaction) {
+        amount: function (transaction) {
             let amount = this.isOutgoing(transaction) ? -transaction.amount : +transaction.amount;
 
             return amount.toFixed(2);
@@ -95,12 +97,12 @@ export default {
                     alert('Success');
                 }, this.error);
         },
-        revert: function(transaction) {
+        revert: function (transaction) {
             axios.delete('/wallet/' + this.myWallet.id + '/transaction/delete/' + transaction.id).then(() => {
                 this.transactions = this.transactions.filter(t => t.id !== transaction.id);
             }, this.error);
         },
-        error: function(res) {
+        error: function (res) {
             this.errors = Object.values(res.response.data.errors).reduce((all, values) => {
                 values.map(val => all.push(val));
                 return all;
@@ -108,8 +110,23 @@ export default {
             setTimeout(() => {
                 this.errors = [];
             }, 5000);
-        }
-
+        },
+        totalIn: function () {
+            return this.transactions.reduce((sum, transaction) => {
+                if (!this.isOutgoing(transaction)) {
+                    sum += parseFloat(transaction.amount);
+                }
+                return sum;
+            }, 0).toFixed(2);
+        },
+        totalOut: function () {
+            return (-this.transactions.reduce((sum, transaction) => {
+                if (this.isOutgoing(transaction)) {
+                    sum += parseFloat(transaction.amount);
+                }
+                return sum;
+            }, 0)).toFixed(2);
+        },
     }
 }
 </script>
