@@ -20,8 +20,17 @@ class Wallet extends Model
 
     protected $fillable = ['name'];
 
+    protected $casts = [
+        'user_id' => 'int'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function belongsToUser(User $user): bool
+    {
+        return $user->id === $this->user_id;
     }
 }

@@ -20,6 +20,11 @@ class Transaction extends Model
 
     protected $fillable = ['from_wallet', 'to_wallet', 'amount'];
 
+    protected $casts = [
+        'from_wallet' => 'int',
+        'to_wallet'   => 'int'
+    ];
+
     public function from()
     {
         return $this->hasOne(Wallet::class, 'id', 'from_wallet');
