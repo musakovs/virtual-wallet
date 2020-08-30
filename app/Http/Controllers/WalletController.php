@@ -3,29 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wallet;
+use App\Repositories\WalletRepository;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class WalletController extends Controller
 {
     /**
      * @param Request $request
+     * @param WalletRepository $walletRepository
      * @return Wallet
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function create(Request $request): Wallet
+    public function create(Request $request, WalletRepository $walletRepository): Wallet
     {
         $this->validate($request, [
             'name' => 'required|string|max:255'
         ]);
 
-        $wallet = new Wallet(['name' => $request->post('name')]);
-        /**@var $user User */
-        $user = Auth::user();
-        $user->wallets()->save($wallet);
-
-        return $wallet;
+        return $walletRepository->addWallet(
+            $request->user(),
+            new Wallet(['name' => $request->post('name')])
+        );
     }
 
     /**
