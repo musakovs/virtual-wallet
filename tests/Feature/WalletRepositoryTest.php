@@ -35,12 +35,12 @@ class WalletRepositoryTest extends TestCase
     {
         /**@var $user User */
         $user = factory(User::class)->create();
+        $wallet = factory(Wallet::class)->make();
 
-        $wallet = new Wallet(['name' => 'test']);
+        $added = $this->walletRepository->addWallet($user, $wallet);
 
-        $this->walletRepository->addWallet($user, $wallet);
-
-        $this->assertEquals($user->wallets()->first()->id, $wallet->id);
+        $this->assertEquals($wallet, $added);
+        $this->assertTrue($user->wallets()->get()->contains($wallet));
         $this->assertEquals($user->id, $wallet->user_id);
     }
 }
