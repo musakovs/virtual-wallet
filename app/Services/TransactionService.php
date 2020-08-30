@@ -22,6 +22,10 @@ class TransactionService
             throw new TransactionException('cannot send to self');
         }
 
+        if ($from->amount < $amount) {
+            throw new TransactionException('cannot send, not enough money');
+        }
+
         try {
             $transaction = DB::transaction(function () use ($from, $to, $amount) {
 

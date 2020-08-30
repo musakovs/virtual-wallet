@@ -78,7 +78,7 @@ class TransactionsServiceTest extends TestCase
         $from = Wallet::query()->find($this->wallet1->id);
         $to   = Wallet::query()->find($this->wallet2->id);
 
-        $this->assertEquals('1000.00', $from->amount);
-        $this->assertEquals('1000.00', $to->amount);
+        $this->assertTrue($from->amount == 1000);
+        $this->assertTrue($to->amount == 1000);
     }
 }

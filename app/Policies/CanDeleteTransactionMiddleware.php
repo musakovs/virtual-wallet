@@ -26,7 +26,7 @@ class CanDeleteTransactionMiddleware
         $transaction = $request->transaction;
 
         if (
-            $user->id === $wallet->user_id &&
+            $wallet->belongsToUser($user) &&
             (
                 $wallet->id === $transaction->from_wallet
                 || $wallet->id === $transaction->to_wallet

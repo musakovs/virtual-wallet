@@ -6,12 +6,11 @@ use App\Models\Wallet;
 use App\Repositories\WalletRepository;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class WalletRepositoryTest extends TestCase
 {
+
     use DatabaseMigrations;
 
     /**
